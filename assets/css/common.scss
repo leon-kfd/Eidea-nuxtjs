@@ -1,0 +1,94 @@
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  padding: 0;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
+ul,
+li,
+ol {
+  margin: 0;
+  padding: 0;
+}
+ul {
+  list-style: none;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+a:link {
+  text-decoration: none;
+}
+a:visited {
+  text-decoration: none;
+  color: inherit;
+}
+a:hover {
+  text-decoration: none;
+  color: inherit;
+}
+a:active {
+  text-decoration: none;
+  color: inherit;
+}
+.fl {
+  float: left;
+}
+.fr {
+  float: right;
+}
+.clear {
+  zoom: 1;
+}
+.clear:after {
+  content: '';
+  display: block;
+  clear: both;
+  height: 0;
+  visibility: hidden;
+}
+.hidden {
+  display: none !important;
+}
+.container {
+  width: 1060px;
+  margin: 0 auto;
+  padding: 0 10px;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+.slide-fade-left-enter-active,
+.slide-fade-right-enter-active {
+  transition: all 0.8s ease;
+}
+.slide-fade-left-leave-active,
+.slide-fade-right-leave-active {
+  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.slide-fade-left-enter,
+.slide-fade-left-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
+}
+.slide-fade-right-enter,
+.slide-fade-right-leave-to {
+  transform: translateX(-20px);
+  opacity: 0;
+}
