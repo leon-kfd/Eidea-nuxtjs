@@ -23,7 +23,7 @@
                   <p class="goods-detail">{{ item.goodsdetail }} </p>
                   <p class="goods-price"><i class="fa fa-jpy fa-fw"></i>{{ item.goodsprice }}</p>
                   <button class="btn-buy"
-                          :onClick="'javascript:window.location.href=\'goods.html?id='+item.id+'\''">
+                          @click="$router.push({path:'/detail', query:{id: item.goodsid}})">
                     立即购买 <i class="fa fa-long-arrow-right"
                        aria-hidden="true"></i>
                   </button>
@@ -55,18 +55,17 @@
           <div class="selling-box-main clear">
             <div v-for="(item,index) in manSelling"
                  :key="index"
-                 class="selling-box-list fl">
-              <a :href="'goods.html?id='+item.id">
-                <p class="list-tag">Top.0<span>{{ index+1 }}</span></p>
-                <p class="goods-name">{{ item.goodsname }}</p>
-                <p class="goods-img">
-                  <img :src="item.goodsimg"
-                       width="200"
-                       height="250">
-                </p>
-                <p class="goods-price fl"><i class="fa fa-jpy"></i> {{ item.goodsprice }}</p>
-                <p class="goods-detail fr">Detail <i class="fa fa-long-arrow-right"></i></p>
-              </a>
+                 class="selling-box-list fl"
+                 @click="$router.push({path:'/detail', query:{id: item.goodsid}})">
+              <p class="list-tag">Top.0<span>{{ index+1 }}</span></p>
+              <p class="goods-name">{{ item.goodsname }}</p>
+              <p class="goods-img">
+                <img :src="item.goodsimg"
+                     width="200"
+                     height="250">
+              </p>
+              <p class="goods-price fl"><i class="fa fa-jpy"></i> {{ item.goodsprice }}</p>
+              <p class="goods-detail fr">Detail <i class="fa fa-long-arrow-right"></i></p>
             </div>
           </div>
         </div>
@@ -77,18 +76,17 @@
           <div class="selling-box-main clear">
             <div v-for="(item,index) in ladySelling"
                  :key="index"
-                 class="selling-box-list fl">
-              <a :href="'goods.html?id='+item.id">
-                <p class="list-tag">Top.0<span>{{ index+1 }}</span></p>
-                <p class="goods-name">{{ item.goodsname }}</p>
-                <p class="goods-img">
-                  <img :src="item.goodsimg"
-                       width="200"
-                       height="250">
-                </p>
-                <p class="goods-price fl"><i class="fa fa-jpy"></i> {{ item.goodsprice }}</p>
-                <p class="goods-detail fr">Detail <i class="fa fa-long-arrow-right"></i></p>
-              </a>
+                 class="selling-box-list fl"
+                 @click="$router.push({path:'/detail', query:{id: item.goodsid}})">
+              <p class="list-tag">Top.0<span>{{ index+1 }}</span></p>
+              <p class="goods-name">{{ item.goodsname }}</p>
+              <p class="goods-img">
+                <img :src="item.goodsimg"
+                     width="200"
+                     height="250">
+              </p>
+              <p class="goods-price fl"><i class="fa fa-jpy"></i> {{ item.goodsprice }}</p>
+              <p class="goods-detail fr">Detail <i class="fa fa-long-arrow-right"></i></p>
             </div>
           </div>
         </div>
@@ -100,6 +98,7 @@
 <script>
 import { get } from '~/plugins/axios'
 export default {
+  name: 'Home',
   data () {
     return {
       timer: null,
@@ -129,6 +128,9 @@ export default {
   },
   mounted () {
     this.setslide()
+  },
+  destroyed () {
+    this.timer = null
   },
   methods: {
     tochocie (cindex) {
@@ -280,6 +282,7 @@ export default {
         width: 240px;
         background: #fff;
         box-shadow: 0 0 5px #aaa, 0 1px 15px #aaa;
+        cursor: pointer;
         &:not(:last-child) {
           margin-right: 25px;
         }

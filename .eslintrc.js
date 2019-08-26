@@ -18,7 +18,9 @@ module.exports = {
     'vue/html-end-tag': 'off',
     'vue/html-self-closing': 'off',
     'vue/html-indent': 'off',
+    'vue/multiline-html-element-content-newline': 'off',
     'no-console': 'off',
-    'arrow-parens': 'off'
+    'arrow-parens': 'off',
+    eqeqeq: 'off'
   }
 }

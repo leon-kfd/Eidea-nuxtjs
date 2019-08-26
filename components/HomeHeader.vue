@@ -3,10 +3,10 @@
     <div class="container">
       <div class="clear">
         <div class="logo-box fl">
-          <a href="javascript:void(0)">
-            <img src="@/assets/img/logo.png"
-                 height="60px">
-          </a>
+          <img src="@/assets/img/logo.png"
+               class="logo-img"
+               height="60px"
+               @click="$router.push('/')">
         </div>
         <div class="nav-box fl">
           <ul class="classify-nav-list">
@@ -14,18 +14,18 @@
               <span class="title">男士</span>
               <ul class="classify-second-list">
                 <p class="nav-title-after">MEN</p>
-                <li class="classify-second-listitem"><a href="search.html?sex=man&classify=jacket">男士衣服</a></li>
-                <li class="classify-second-listitem"><a href="search.html?sex=man&classify=pants">男士裤子</a></li>
-                <li class="classify-second-listitem"><a href="search.html?sex=man&classify=shoes">男士鞋子</a></li>
+                <li class="classify-second-listitem"><a href="query?sex=1&classify=1">男士衣服</a></li>
+                <li class="classify-second-listitem"><a href="query?sex=1&classify=2">男士裤子</a></li>
+                <li class="classify-second-listitem"><a href="query?sex=1&classify=3">男士鞋子</a></li>
               </ul>
             </li>
             <li class="classify-nav-listitem">
               <span class="title">女士</span>
               <ul class="classify-second-list">
                 <p class="nav-title-after">LADY</p>
-                <li class="classify-second-listitem"><a href="search.html?sex=lady&classify=jacket">女士衣服</a></li>
-                <li class="classify-second-listitem"><a href="search.html?sex=lady&classify=pants">女士裤子</a></li>
-                <li class="classify-second-listitem"><a href="search.html?sex=lady&classify=shoes">女士鞋子</a></li>
+                <li class="classify-second-listitem"><a href="query?sex=2&classify=1">女士衣服</a></li>
+                <li class="classify-second-listitem"><a href="query?sex=2&classify=2">女士裤子</a></li>
+                <li class="classify-second-listitem"><a href="query?sex=2&classify=3">女士鞋子</a></li>
               </ul>
             </li>
             <li class="classify-nav-listitem">
@@ -36,11 +36,13 @@
         </div>
         <div class="search-box fr">
           <div class="input-box fl">
-            <input id="search"
+            <input v-model.trim="searchWord"
                    type="text"
                    class="input-style1"
-                   placeholder="全站搜索商品">
-            <span><a href="javascript:"><i class="fa fa-search fa-fw"></i></a></span>
+                   placeholder="全站搜索商品"
+                   @keyup.enter="searchGoods">
+            <span class="search-btn"
+                  @click="searchGoods"><i class="fa fa-search fa-fw"></i></span>
           </div>
           <div class="user-box fl">
             <span><i class="fa fa-user-o fa-fw"></i><a href="login.html">登录</a></span>
@@ -56,6 +58,15 @@ export default {
   name: 'HomeHeader',
   data () {
     return {
+      searchWord: ''
+    }
+  },
+  mounted () {
+    this.searchWord = this.$route.query.word || ''
+  },
+  methods: {
+    searchGoods () {
+      location.href = `/query?word=${this.searchWord}`
     }
   }
 }
@@ -65,6 +76,12 @@ export default {
   background: #fff;
   min-width: 1080px;
   height: 60px;
+  box-shadow: 0 0 3px #999;
+  .logo-img {
+    cursor: pointer;
+    height: 60px;
+    width: auto;
+  }
 }
 .classify-nav-list {
   list-style: none;
@@ -168,5 +185,8 @@ a.link01:hover {
       border-top: 2px solid #262626;
     }
   }
+}
+.search-btn {
+  cursor: pointer;
 }
 </style>
