@@ -134,7 +134,7 @@
           <ul class="product-list">
             <li v-for="(item,index) in productList"
                 :key="index">
-              <a :href="'goods.html?id='+item.id">
+              <nuxt-link :to="{path: 'detail', query: {id: item.goodsid}}">
                 <p class="goods-img">
                   <img :src="item.goodsimg"
                        width="180"
@@ -143,7 +143,7 @@
                 <p class="goods-name">{{ item.goodsname }}</p>
                 <p class="goods-detail">{{ item.goodsdetail }}</p>
                 <p class="goods-price">&yen;{{ item.goodsprice }}</p>
-              </a>
+              </nuxt-link>
             </li>
           </ul>
           <!--product-list-->

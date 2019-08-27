@@ -8,7 +8,6 @@
                width="300"
                height="375">
         </div>
-        <!--goods-img-box-->
         <div class="goods-info-box fl">
           <p class="goods-name">{{ goodsname }}</p>
           <p class="goods-detail">{{ goodsdetail }}</p>
@@ -22,44 +21,27 @@
                     @click="addShoppingcart">放入购物车 <i class="fa fa-long-arrow-right"></i></button>
           </div>
         </div>
-        <!--goods-info-box-->
         <div class="clear"></div>
       </div>
-      <!--goods-box-->
       <div id="recommend"
            class="recommend-box">
         <p class="recommend-title">猜你喜欢</p>
         <div class="recommend-box-main">
-          <div v-for="(item,index) in recommendSelling"
+          <div v-for="(item,index) in recommendList"
                :key="index"
                class="recommend-box-list fl">
-            <a :href="'goods.html?id='+item.id">
-              <p class="goods-name">{{ item.name }}</p>
+            <nuxt-link :to="{path: 'detail', query: {id: item.goodsid}}">
+              <p class="goods-name">{{ item.goodsname }}</p>
               <p class="goods-img">
-                <svg viewBox="0 0 300 375"
+                <img :src="item.goodsimg"
                      width="200"
                      height="250">
-                  <g>
-                    <path d="m185,39 c-6,21 -21,36 -38,36 c-17,0 -32,-15 -38,-36 l-94,55 l26,86 l29,-17 l0,176 l155,0 l0,-175 l28,16 l26,-86 l-94,-55 l0,0z"
-                          fill="#4c4c4c" />
-                    <ellipse ry="11.5"
-                             rx="11.5"
-                             cy="173"
-                             cx="124"
-                             fill="#c48552" />
-                    <path d="m99,252 l24,-34 l24,34 l-48,0z"
-                          fill="#c48552" />
-                    <path d="m134,252 l33,-64 l33,64 l-65,0z"
-                          fill="#c48552" />
-                  </g>
-                </svg>
               </p>
-              <p class="goods-price fl"><i class="fa fa-jpy"></i> {{ item.price }}</p>
+              <p class="goods-price fl"><i class="fa fa-jpy"></i> {{ item.goodsprice }}</p>
               <p class="goods-detail fr">Detail <i class="fa fa-long-arrow-right"></i></p>
               <div class="clear"></div>
-            </a>
+            </nuxt-link>
           </div>
-          <!--selling-box-list-->
         </div>
         <div class="clear"></div>
       </div>
@@ -73,21 +55,50 @@ export default {
   name: 'Detail',
   data () {
     return {
-      recommendSelling: []
+    }
+  },
+  watch: {
+    '$route.fullPath' () {
+      this.getData()
     }
   },
   async asyncData ({ route }) {
     const { data } = await get('/detail', {
       ...route.query
     })
+    const { data: recommendList } = await get('/recommend', {
+      ...route.query
+    })
+    recommendList.map(item => {
+      item.goodsimg = `http://localhost:3001/goodsimg/${item.goodsimg}`
+      return item
+    })
     return {
       goodsname: data.goodsname,
       goodsdetail: data.goodsdetail,
       goodsprice: data.goodsprice,
-      goodsimg: `http://localhost:3001/goodsimg/${data.goodsimg}`
+      goodsimg: `http://localhost:3001/goodsimg/${data.goodsimg}`,
+      recommendList
     }
   },
   methods: {
+    async getData () {
+      const { data } = await get('/detail', {
+        ...this.$route.query
+      })
+      const { data: recommendList } = await get('/recommend', {
+        ...this.$route.query
+      })
+      recommendList.map(item => {
+        item.goodsimg = `http://localhost:3001/goodsimg/${item.goodsimg}`
+        return item
+      })
+      this.goodsname = data.goodsname
+      this.goodsdetail = data.goodsdetail
+      this.goodsprice = data.goodsprice
+      this.goodsimg = `http://localhost:3001/goodsimg/${data.goodsimg}`
+      this.recommendList = recommendList
+    },
     addShoppingcart () {}
   }
 }
@@ -218,7 +229,7 @@ button.btn-purchase:hover > i {
   margin-bottom: 50px;
 }
 .recommend-box-list:not(:last-child) {
-  margin-right: 30px;
+  margin-right: 24px;
 }
 .recommend-box-list p.goods-name {
   margin-top: 15px;
