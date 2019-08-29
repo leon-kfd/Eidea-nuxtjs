@@ -45,7 +45,9 @@
                   @click="searchGoods"><i class="fa fa-search fa-fw"></i></span>
           </div>
           <div class="user-box fl">
-            <span><i class="fa fa-user-o fa-fw"></i><a href="login.html">登录</a></span>
+            <span><i class="fa fa-user-o fa-fw"></i>
+              <nuxt-link to="login">登录</nuxt-link>
+            </span>
           </div>
         </div>
       </div>

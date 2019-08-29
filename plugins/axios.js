@@ -16,15 +16,19 @@ instance.interceptors.request.use((config) => {
 })
 
 instance.interceptors.response.use((response) => {
-  return response.data
+  if (response.data.code == 200) {
+    return response.data
+  } else {
+    return Promise.reject(new Error(response.data.message))
+  }
 }, (error) => {
   return Promise.reject(error)
 })
 
 const get = (url, params) => instance.get(url, { params })
-const post = (url, data) => instance.post(url, { data })
+const post = (url, data) => instance.post(url, data)
 export { get, post, instance }
 export default ({ app }, inject) => {
   inject('get', (url, params) => instance.get(url, { params }))
-  inject('post', (url, data) => instance.post(url, { data }))
+  inject('post', (url, data) => instance.post(url, data))
 }
