@@ -4,7 +4,7 @@
       <div id="goods"
            class="goods-box">
         <div class="goods-img-box fl">
-          <img :src="goodsimg"
+          <img v-lazy="goodsimg"
                width="300"
                height="375">
         </div>
@@ -33,7 +33,7 @@
             <nuxt-link :to="{path: 'detail', query: {id: item.goodsid}}">
               <p class="goods-name">{{ item.goodsname }}</p>
               <p class="goods-img">
-                <img :src="item.goodsimg"
+                <img v-lazy="item.goodsimg"
                      width="200"
                      height="250">
               </p>
@@ -50,7 +50,6 @@
 </template>
 
 <script>
-import { get } from '~/plugins/axios'
 export default {
   name: 'Detail',
   data () {
@@ -62,41 +61,41 @@ export default {
       this.getData()
     }
   },
-  async asyncData ({ route }) {
-    const { data } = await get('/detail', {
+  async asyncData ({ app, route }) {
+    const { data } = await app.$get('/detail', {
       ...route.query
     })
-    const { data: recommendList } = await get('/recommend', {
+    const { data: recommendList } = await app.$get('/recommend', {
       ...route.query
     })
     recommendList.map(item => {
-      item.goodsimg = `http://localhost:3001/goodsimg/${item.goodsimg}`
+      item.goodsimg = `${app.$baseURL}goodsimg/${item.goodsimg}`
       return item
     })
     return {
       goodsname: data.goodsname,
       goodsdetail: data.goodsdetail,
       goodsprice: data.goodsprice,
-      goodsimg: `http://localhost:3001/goodsimg/${data.goodsimg}`,
+      goodsimg: `${app.$baseURL}goodsimg/${data.goodsimg}`,
       recommendList
     }
   },
   methods: {
     async getData () {
-      const { data } = await get('/detail', {
+      const { data } = await this.$get('/detail', {
         ...this.$route.query
       })
-      const { data: recommendList } = await get('/recommend', {
+      const { data: recommendList } = await this.$get('/recommend', {
         ...this.$route.query
       })
       recommendList.map(item => {
-        item.goodsimg = `http://localhost:3001/goodsimg/${item.goodsimg}`
+        item.goodsimg = `${this.$baseURL}goodsimg/${item.goodsimg}`
         return item
       })
       this.goodsname = data.goodsname
       this.goodsdetail = data.goodsdetail
       this.goodsprice = data.goodsprice
-      this.goodsimg = `http://localhost:3001/goodsimg/${data.goodsimg}`
+      this.goodsimg = `${this.$baseURL}goodsimg/${data.goodsimg}`
       this.recommendList = recommendList
     },
     addShoppingcart () {}

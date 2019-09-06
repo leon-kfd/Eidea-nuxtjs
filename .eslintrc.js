@@ -21,6 +21,7 @@ module.exports = {
     'vue/multiline-html-element-content-newline': 'off',
     'no-console': 'off',
     'arrow-parens': 'off',
-    eqeqeq: 'off'
+    eqeqeq: 'off',
+    camelcase: 'off'
   }
 }

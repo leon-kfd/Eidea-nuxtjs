@@ -94,7 +94,6 @@
 </template>
 
 <script>
-import { post } from '~/plugins/axios'
 export default {
   name: 'Register',
   layout: 'common',
@@ -163,7 +162,7 @@ export default {
     toRegister () {
       this.checkForm()
       if (!this.rulesFlag) {
-        post('register', {
+        this.$post('register', {
           username: this.username,
           email: this.email,
           password: this.password

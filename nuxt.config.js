@@ -28,7 +28,8 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '~plugins/axios.js'
+    '~plugins/axios.js',
+    '~plugins/vue-lazyload.js'
   ],
   /*
   ** Nuxt.js dev-modules
@@ -43,6 +44,7 @@ module.exports = {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios'
+    // '@nuxtjs/proxy'
   ],
   /*
   ** Axios module configuration

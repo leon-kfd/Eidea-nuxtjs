@@ -1,20 +1,23 @@
 <template>
   <div>
-    <HomeHeader></HomeHeader>
+    <HomeHeader />
     <div class="wraper">
       <nuxt />
     </div>
-    <HomeFooter></HomeFooter>
+    <Cart />
+    <HomeFooter />
   </div>
 </template>
 
 <script>
 import HomeHeader from '@/components/HomeHeader'
 import HomeFooter from '@/components/HomeFooter'
+import Cart from '@/components/Cart'
 export default {
   components: {
     HomeHeader,
-    HomeFooter
+    HomeFooter,
+    Cart
   }
 }
 </script>

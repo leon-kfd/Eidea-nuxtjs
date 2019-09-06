@@ -136,7 +136,7 @@
                 :key="index">
               <nuxt-link :to="{path: 'detail', query: {id: item.goodsid}}">
                 <p class="goods-img">
-                  <img :src="item.goodsimg"
+                  <img v-lazy="item.goodsimg"
                        width="180"
                        height="225">
                 </p>
@@ -185,7 +185,6 @@
 </template>
 
 <script>
-import { get } from '~/plugins/axios'
 export default {
   name: 'Query',
   data () {
@@ -199,12 +198,22 @@ export default {
       word: ''
     }
   },
-  async asyncData ({ route }) {
-    const { data } = await get('query', {
+  watch: {
+    '$route.query' (val) {
+      Object.keys(val).map(item => {
+        if (typeof val[item] !== 'undefined') {
+          this[item] = val[item]
+        }
+      })
+      this.getData()
+    }
+  },
+  async asyncData ({ app, route }) {
+    const { data } = await app.$get('query', {
       ...route.query
     })
     const productList = data.items.map(item => {
-      item.goodsimg = `http://localhost:3001/goodsimg/${item.goodsimg}`
+      item.goodsimg = `${app.$baseURL}goodsimg/${item.goodsimg}`
       return item
     })
     return {
@@ -273,11 +282,11 @@ export default {
           delete params[item]
         }
       })
-      const { data } = await get('query', {
+      const { data } = await this.$get('query', {
         ...params
       })
       const productList = data.items.map(item => {
-        item.goodsimg = `http://localhost:3001/goodsimg/${item.goodsimg}`
+        item.goodsimg = `${this.$baseURL}goodsimg/${item.goodsimg}`
         return item
       })
       this.productList = productList

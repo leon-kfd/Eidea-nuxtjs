@@ -14,18 +14,30 @@
               <span class="title">男士</span>
               <ul class="classify-second-list">
                 <p class="nav-title-after">MEN</p>
-                <li class="classify-second-listitem"><a href="query?sex=1&classify=1">男士衣服</a></li>
-                <li class="classify-second-listitem"><a href="query?sex=1&classify=2">男士裤子</a></li>
-                <li class="classify-second-listitem"><a href="query?sex=1&classify=3">男士鞋子</a></li>
+                <li class="classify-second-listitem">
+                  <nuxt-link :to="{path: '/query', query: {sex:1, classify:1}}">男士衣服</nuxt-link>
+                </li>
+                <li class="classify-second-listitem">
+                  <nuxt-link :to="{path: '/query', query: {sex:1, classify:2}}">男士裤子</nuxt-link>
+                </li>
+                <li class="classify-second-listitem">
+                  <nuxt-link :to="{path: '/query', query: {sex:1, classify:3}}">男士鞋子</nuxt-link>
+                </li>
               </ul>
             </li>
             <li class="classify-nav-listitem">
               <span class="title">女士</span>
               <ul class="classify-second-list">
                 <p class="nav-title-after">LADY</p>
-                <li class="classify-second-listitem"><a href="query?sex=2&classify=1">女士衣服</a></li>
-                <li class="classify-second-listitem"><a href="query?sex=2&classify=2">女士裤子</a></li>
-                <li class="classify-second-listitem"><a href="query?sex=2&classify=3">女士鞋子</a></li>
+                <li class="classify-second-listitem">
+                  <nuxt-link :to="{path: '/query', query: {sex:2, classify:1}}">女士衣服</nuxt-link>
+                </li>
+                <li class="classify-second-listitem">
+                  <nuxt-link :to="{path: '/query', query: {sex:2, classify:2}}">女士裤子</nuxt-link>
+                </li>
+                <li class="classify-second-listitem">
+                  <nuxt-link :to="{path: '/query', query: {sex:2, classify:3}}">女士鞋子</nuxt-link>
+                </li>
               </ul>
             </li>
             <li class="classify-nav-listitem">
@@ -46,7 +58,13 @@
           </div>
           <div class="user-box fl">
             <span><i class="fa fa-user-o fa-fw"></i>
-              <nuxt-link to="login">登录</nuxt-link>
+              <nuxt-link v-if="!username"
+                         to="login">登录</nuxt-link>
+              <span v-if="username"
+                    class="username">{{ username }}</span>
+              <span v-if="username"
+                    class="logout"
+                    @click="toLogout">注销</span>
             </span>
           </div>
         </div>
@@ -63,12 +81,26 @@ export default {
       searchWord: ''
     }
   },
+  computed: {
+    username () {
+      return this.$store.state.username
+    }
+  },
+  async created () {
+    const { data: username } = await this.$get('checkLogin')
+    this.$store.commit('updateUsername', username)
+  },
   mounted () {
     this.searchWord = this.$route.query.word || ''
   },
   methods: {
     searchGoods () {
       location.href = `/query?word=${this.searchWord}`
+    },
+    toLogout () {
+      this.$get('logout').then(data => {
+        this.$store.commit('updateUsername', '')
+      })
     }
   }
 }
@@ -160,9 +192,14 @@ a.link01:hover {
   height: 60px;
   line-height: 60px;
   font-weight: bold;
-  span {
+  .username {
+    padding-right: 8px;
+    text-transform: capitalize;
+  }
+  .logout {
     border-left: 2px solid #262626;
-    padding-left: 15px;
+    padding-left: 10px;
+    cursor: pointer;
   }
   i {
     font-weight: bold;

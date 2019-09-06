@@ -16,8 +16,7 @@
                    type="text"
                    class="input-login"
                    name="username"
-                   placeholder="Username"
-                   required>
+                   placeholder="Username">
           </div>
           <div class="input-login-box">
             <span class="input-icon"><i class="fa fa-key fa-fw"></i></span>
@@ -26,10 +25,9 @@
                    class="input-login"
                    name="password"
                    placeholder="password"
-                   required>
+                   @keyup.enter="toLogin">
           </div>
           <button class="btn1"
-                  type="submit"
                   @click="toLogin">登录</button>
           <br>
           <nuxt-link to="register"
@@ -42,7 +40,6 @@
 </template>
 
 <script>
-import { post } from '~/plugins/axios'
 export default {
   name: 'Login',
   layout: 'common',
@@ -54,12 +51,17 @@ export default {
   },
   methods: {
     toLogin () {
-      post('/login', {
-        username: this.username,
-        password: this.password
-      }).then(data => {
-        console.log(data)
-      })
+      if (this.username.length > 0 && this.password.length > 0) {
+        this.$post('/login', {
+          username: this.username,
+          password: this.password
+        }).then(data => {
+          this.$store.commit('updateUsername', this.username)
+          this.$router.push('/')
+        }, data => {
+          alert('账号密码错误')
+        })
+      }
     }
   }
 }

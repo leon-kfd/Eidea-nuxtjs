@@ -12,7 +12,7 @@
             <div class="carousel-img">
               <transition name="slide-fade-right">
                 <img v-if="activeindex==index"
-                     :src="item.goodsimg">
+                     v-lazy="item.goodsimg">
               </transition>
             </div>
             <div class="carousel-text">
@@ -60,7 +60,7 @@
               <p class="list-tag">Top.0<span>{{ index+1 }}</span></p>
               <p class="goods-name">{{ item.goodsname }}</p>
               <p class="goods-img">
-                <img :src="item.goodsimg"
+                <img v-lazy="item.goodsimg"
                      width="200"
                      height="250">
               </p>
@@ -81,7 +81,7 @@
               <p class="list-tag">Top.0<span>{{ index+1 }}</span></p>
               <p class="goods-name">{{ item.goodsname }}</p>
               <p class="goods-img">
-                <img :src="item.goodsimg"
+                <img v-lazy="item.goodsimg"
                      width="200"
                      height="250">
               </p>
@@ -96,7 +96,6 @@
 </template>
 
 <script>
-import { get } from '~/plugins/axios'
 export default {
   name: 'Home',
   data () {
@@ -105,19 +104,19 @@ export default {
       activeindex: 0
     }
   },
-  async asyncData () {
-    const { data: carousel } = await get('getCarouselList')
-    const { data: selling } = await get('getHomeGoods')
+  async asyncData ({ app }) {
+    const { data: carousel } = await app.$get('getCarouselList')
+    const { data: selling } = await app.$get('getHomeGoods')
     const carouselList = carousel.map(item => {
-      item.goodsimg = `http://localhost:3001/${item.goodsimg}`
+      item.goodsimg = `${app.$baseURL}${item.goodsimg}`
       return item
     })
     const manSelling = selling.manItems.map(item => {
-      item.goodsimg = `http://localhost:3001/goodsimg/${item.goodsimg}`
+      item.goodsimg = `${app.$baseURL}goodsimg/${item.goodsimg}`
       return item
     })
     const ladySelling = selling.ladyItems.map(item => {
-      item.goodsimg = `http://localhost:3001/goodsimg/${item.goodsimg}`
+      item.goodsimg = `${app.$baseURL}goodsimg/${item.goodsimg}`
       return item
     })
     return {
