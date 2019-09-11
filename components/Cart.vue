@@ -1,12 +1,14 @@
 <template>
   <div id="Cart"
        class="shopping-cart-box"
-       :class="{'show-mask': !cartActive}">
-    <div class="shopping-cart-btn"
-         :class="{active:cartActive,'shopping-cart-btn-after':!cartActive}"
-         @click="showCart">
-      <div :class="{'i-rotate':!cartActive}">
-        <i v-if="cartActive"
+       :class="{'show-mask': cartActive}"
+       @click="cartActive=false">
+    <div id="ShoppingCartBtn"
+         class="shopping-cart-btn"
+         :class="{active:!cartActive,'shopping-cart-btn-after':cartActive}"
+         @click.stop="showCart">
+      <div :class="{'i-rotate':cartActive}">
+        <i v-if="!cartActive"
            class="fa fa-shopping-basket fa-fw"></i>
         <i v-else
            class="fa fa-times fa-fw"></i>
@@ -15,7 +17,8 @@
            class="new-active">{{ cartGoodsList.length }}</div>
     </div>
     <div class="shopping-cart-main"
-         :class="{'shopping-cart-main-after':!cartActive}">
+         :class="{'shopping-cart-main-after':cartActive}"
+         @click.stop="nothing">
       <div class="shopping-cart-title">
         <span>购物车</span>
       </div>
@@ -34,19 +37,19 @@
           <tr v-for="(item,index) in cartGoodsList"
               :key="index">
             <td class="goods-picture">
-              <img :src="'img/goodsimg/'+item.imgurl"
+              <img :src="item.goodsimg"
                    width="48"
                    height="60">
             </td>
             <td class="goods-name">
-              <p class="name">{{ item.name }}</p>
-              <p class="detail">{{ item.detail }}</p>
+              <p class="name">{{ item.goodsname }}</p>
+              <p class="detail">{{ item.goodsdetail }}</p>
             </td>
             <td class="goods-price">
               <p>
                 <i class="fa fa-jpy"
                    aria-hidden="true"></i>
-                <span>{{ item.price*item.quantity }}</span>
+                <span>{{ item.goodsprice*item.quantity }}</span>
               </p>
               <div class="goods-quantity">
                 <button class="btn-reduce"
@@ -65,10 +68,10 @@
               </div>
             </td>
             <td class="goods-delete">
-              <a href="#0"
-                 @click="removeGoods(item.goodsid)">
+              <span class="goods-delete-btn"
+                    @click="removeGoods(item.goodsid, index)">
                 <i class="fa fa-times"></i>
-              </a>
+              </span>
             </td>
           </tr>
         </table>
@@ -87,20 +90,20 @@
 </template>
 
 <script>
+// import { mapActions } from 'vuex'
 export default {
   name: 'Cart',
   data () {
     return {
-      cartActive: true,
-      cartGoodsList: [],
-      isLog: true
+      cartActive: false,
+      cartGoodsList: []
     }
   },
   computed: {
     priceTotal () {
       let priceTotal = 0
       this.cartGoodsList.map(result => {
-        priceTotal += ~~(result.price * result.quantity)
+        priceTotal += ~~(result.goodsprice * result.quantity)
       })
       return priceTotal
     },
@@ -108,30 +111,75 @@ export default {
       return this.$store.state.username
     }
   },
+  watch: {
+    '$store.state.username': {
+      immediate: true,
+      handler () {
+        this.getCartGoodsList()
+      }
+    },
+    '$store.state.needRefreshCart' (val) {
+      if (val) {
+        this.getCartGoodsList()
+      }
+    }
+  },
   methods: {
+    // ...mapActions({
+    //   getCartGoodsList: 'cart/getCartGoodsList'
+    // }),
+    async getCartGoodsList () {
+      if (this.username) {
+        const { data: cartGoodsList } = await this.$get('getCartGoodsList')
+        this.cartGoodsList = cartGoodsList.map(item => {
+          item.goodsimg = `${this.$baseURL}goodsimg/${item.goodsimg}`
+          return item
+        })
+        this.$store.commit('updateNeedRefreshCart', false)
+      } else {
+        this.cartGoodsList = []
+      }
+    },
+    nothing () {},
     showCart () {
       this.cartActive = !this.cartActive
     },
     reduceGoods (item) {
       if (item.quantity > 1) {
         item.quantity--
+        this.changeCartQuantity(item.goodsid, item.quantity)
       }
-      this.changeCartQuantity(item.goodsid, item.quantity)
     },
     addGoods (item) {
       if (item.quantity < 20) {
         item.quantity++
+        this.changeCartQuantity(item.goodsid, item.quantity)
       }
-      this.changeCartQuantity(item.goodsid, item.quantity)
     },
-    removeGoods (goodsId) {
+    removeGoods (goodsid, index) {
+      this.$post('removeCartGoods', {
+        goodsid
+      }).then(data => {
+        this.cartGoodsList.splice(index, 1)
+      }, data => {
+        alert('服务端异常')
+      })
     },
     checkGoodsQuantity (item) {
       const num = ~~(item.quantity) || 1
       item.quantity = num > 20 ? 20 : (num < 1 ? 1 : num)
       this.changeCartQuantity(item.goodsid, item.quantity)
     },
-    changeCartQuantity (a, b) {
+    changeCartQuantity (goodsid, quantity) {
+      this.$post('setCartGoods', {
+        goodsid,
+        quantity
+      }).then(data => {
+        // console.log(data)
+      }, data => {
+        alert('服务端异常')
+        this.getCartGoodsList()
+      })
     }
   }
 
@@ -227,6 +275,7 @@ export default {
 .shopping-cart-main-after {
   height: 450px;
   width: 350px;
+  transition: 0.8s ease-out;
 }
 .shopping-cart-btn-after {
   border-radius: 0 0 8px 0;
@@ -307,7 +356,7 @@ table.shopping-cart-table td > img {
   height: 60px;
 }
 td.goods-price {
-  width: 80px;
+  width: 90px;
 }
 td.goods-price p {
   text-align: center;
@@ -317,11 +366,11 @@ td.goods-price p:first-child {
   margin-bottom: 3px;
 }
 td.goods-name {
-  width: 130px;
+  width: 190px;
   padding-left: 10px !important;
 }
 td.goods-name .name {
-  width: 120px;
+  width: 180px;
   height: 18px;
   font-size: 0.9em;
   font-weight: bold;
@@ -331,7 +380,7 @@ td.goods-name .name {
   white-space: nowrap;
 }
 td.goods-name .detail {
-  width: 120px;
+  width: 180px;
   color: #888;
   height: 18px;
   font-size: 0.8em;
@@ -387,6 +436,9 @@ td.goods-name .detail {
   font-weight: bold;
   color: #cc3333;
   padding: 0 5px 0 0 !important;
+  .goods-delete-btn {
+    cursor: pointer;
+  }
 }
 .goods-delete i {
   visibility: hidden;

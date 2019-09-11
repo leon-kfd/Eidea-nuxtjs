@@ -4,7 +4,8 @@
       <div id="goods"
            class="goods-box">
         <div class="goods-img-box fl">
-          <img v-lazy="goodsimg"
+          <img id="goodsImg"
+               v-lazy="goodsimg"
                width="300"
                height="375">
         </div>
@@ -17,7 +18,8 @@
           </div>
           <div class="goods-purchase-box">
             <button class="btn-heart fl"><i class="fa fa-heart-o fa-fw"></i></button>
-            <button class="btn-purchase fl"
+            <button id="AddToCartBtn"
+                    class="btn-purchase fl"
                     @click="addShoppingcart">放入购物车 <i class="fa fa-long-arrow-right"></i></button>
           </div>
         </div>
@@ -82,7 +84,7 @@ export default {
   },
   methods: {
     async getData () {
-      const { data } = await this.$get('/detail', {
+      const { data } = await this.$get('detail', {
         ...this.$route.query
       })
       const { data: recommendList } = await this.$get('/recommend', {
@@ -98,7 +100,49 @@ export default {
       this.goodsimg = `${this.$baseURL}goodsimg/${data.goodsimg}`
       this.recommendList = recommendList
     },
-    addShoppingcart () {}
+    addShoppingcart () {
+      this.$post('addToCart', {
+        goodsid: this.$route.query.id
+      }).then(data => {
+        if (data.code == 200) {
+          this.$store.commit('updateNeedRefreshCart', true)
+          this.showAnimateAddCart()
+        }
+      }, data => {
+        alert('购物车已存在该商品，添加到购物车失败')
+      })
+    },
+    showAnimateAddCart () {
+      const imgEl = document.getElementById('goodsImg')
+      const { offsetTop, offsetLeft, offsetWidth, offsetHeight } = imgEl
+      const newImgEl = new Image()
+      newImgEl.src = this.goodsimg
+      newImgEl.style.cssText = `
+        position:fixed;
+        width: ${offsetWidth}px;
+        height: ${offsetHeight}px;
+        left: ${offsetLeft}px;
+        top: ${offsetTop}px;
+        opacity: 1;`
+      document.body.appendChild(newImgEl)
+      const cartEl = document.getElementById('ShoppingCartBtn')
+      const { offsetTop: cartTop, offsetLeft: cartLeft } = cartEl.parentNode
+      newImgEl.style.cssText = `
+        position:fixed;
+        width: 0;
+        height: 0;
+        left: ${cartLeft}px;
+        top: ${cartTop}px;
+        opacity: 0;
+        transition: width 1s, 
+        height 1s,
+        left 1s,
+        top 1s cubic-bezier(0.56, 0.15, 0.43, 0.85),
+        opacity 1s ease-out`
+      setTimeout(() => {
+        document.body.removeChild(newImgEl)
+      }, 2000)
+    }
   }
 }
 </script>
