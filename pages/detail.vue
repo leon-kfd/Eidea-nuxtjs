@@ -123,7 +123,8 @@ export default {
         height: ${offsetHeight}px;
         left: ${offsetLeft}px;
         top: ${offsetTop}px;
-        opacity: 1;`
+        opacity: 1;
+        transform: rotate(0)`
       document.body.appendChild(newImgEl)
       const cartEl = document.getElementById('ShoppingCartBtn')
       const { offsetTop: cartTop, offsetLeft: cartLeft } = cartEl.parentNode
@@ -134,11 +135,13 @@ export default {
         left: ${cartLeft}px;
         top: ${cartTop}px;
         opacity: 0;
+        transform: rotate(360deg);
         transition: width 1s, 
         height 1s,
         left 1s,
         top 1s cubic-bezier(0.56, 0.15, 0.43, 0.85),
-        opacity 1s ease-out`
+        opacity 1s ease-out,
+        transform 1s ease-out`
       setTimeout(() => {
         document.body.removeChild(newImgEl)
       }, 2000)

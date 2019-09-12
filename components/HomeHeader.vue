@@ -60,8 +60,9 @@
             <span><i class="fa fa-user-o fa-fw"></i>
               <nuxt-link v-if="!username"
                          to="login">登录</nuxt-link>
-              <span v-if="username"
-                    class="username">{{ username }}</span>
+              <nuxt-link v-if="username"
+                         to="personal/settlement"
+                         class="username">{{ username }}</nuxt-link>
               <span v-if="username"
                     class="logout"
                     @click="toLogout">注销</span>
