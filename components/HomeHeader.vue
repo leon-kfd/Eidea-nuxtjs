@@ -61,7 +61,7 @@
               <nuxt-link v-if="!username"
                          to="login">登录</nuxt-link>
               <nuxt-link v-if="username"
-                         to="personal/settlement"
+                         to="personal/my-settlement"
                          class="username">{{ username }}</nuxt-link>
               <span v-if="username"
                     class="logout"
@@ -86,10 +86,6 @@ export default {
     username () {
       return this.$store.state.username
     }
-  },
-  async created () {
-    const { data: username } = await this.$get('checkLogin')
-    this.$store.commit('updateUsername', username)
   },
   mounted () {
     this.searchWord = this.$route.query.word || ''
@@ -228,5 +224,34 @@ a.link01:hover {
 }
 .search-btn {
   cursor: pointer;
+}
+</style>
+<style>
+.nuxt-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200% !important;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    #21bf12,
+    #4488ff,
+    #c12bff,
+    #fb7800,
+    #21bf12,
+    #4488ff,
+    #c12bff,
+    #fb7800
+  );
+  animation: movingColor 2s linear 0s infinite alternate;
+}
+@keyframes movingColor {
+  from {
+    left: 0;
+  }
+  to {
+    left: -100%;
+  }
 }
 </style>

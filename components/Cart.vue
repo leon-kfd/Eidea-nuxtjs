@@ -76,7 +76,8 @@
           </tr>
         </table>
       </div>
-      <div class="shopping-cart-total">
+      <div class="shopping-cart-total"
+           @click="turnToSettlement">
         <p>Total: <i class="fa fa-jpy"
              aria-hidden="true"></i>
           <span>{{ priceTotal }}</span>
@@ -180,6 +181,10 @@ export default {
         alert('服务端异常')
         this.getCartGoodsList()
       })
+    },
+    turnToSettlement () {
+      this.cartActive = false
+      this.$router.push('/settlement')
     }
   }
 
