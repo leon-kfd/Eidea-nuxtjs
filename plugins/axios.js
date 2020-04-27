@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseURL = process.env.NODE_ENV === 'production' ? '../' : '/api/'
+const baseURL = '/api/'
 const onRequest = (config) => {
   return config
 }
