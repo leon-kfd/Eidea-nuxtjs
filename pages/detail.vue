@@ -116,30 +116,30 @@ export default {
       this.goodsimg = `${this.$baseURL}goodsimg/${data.goodsimg}`
       this.recommendList = recommendList
     },
-    async getCollection () {
-      const { data } = await this.$get('getCollection', {
+    getCollection () {
+      this.$get('getCollection', {
         id: this.$route.query.id
+      }).then(data => {
+        this.isCollect = !!data.data
       })
-      this.isCollect = !!data
     },
-    async updateCollection () {
-      const result = await this.$post('updateCollection', {
+    updateCollection () {
+      this.$post('updateCollection', {
         goodsid: this.$route.query.id
-      })
-      if (result.code == 200) {
+      }).then(data => {
         this.isCollect = !this.isCollect
-      }
+      }, data => {
+        alert(data)
+      })
     },
     addShoppingcart () {
       this.$post('addToCart', {
         goodsid: this.$route.query.id
       }).then(data => {
-        if (data.code == 200) {
-          this.$store.commit('updateNeedRefreshCart', true)
-          this.showAnimateAddCart()
-        }
+        this.$store.commit('updateNeedRefreshCart', true)
+        this.showAnimateAddCart()
       }, data => {
-        alert('购物车已存在该商品，添加到购物车失败')
+        alert(data)
       })
     },
     showAnimateAddCart () {
@@ -291,7 +291,7 @@ button.btn-purchase:hover > i {
 .recommend-box > p.recommend-title:before,
 .recommend-box > p.recommend-title:after {
   position: absolute;
-  content: "";
+  content: '';
   top: 50%;
   width: 100px;
   border-top: 2px solid #262626;
@@ -327,7 +327,7 @@ button.btn-purchase:hover > i {
   padding: 0 8px;
 }
 .recommend-box-list p.goods-name:after {
-  content: "";
+  content: '';
   position: absolute;
   bottom: 0px;
   border-top: 2px solid #222;

@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseURL = '/api/'
+const baseURL = process.env.NODE_ENV === 'production' ? '../' : '/api/'
 const onRequest = (config) => {
   return config
 }
@@ -10,7 +10,7 @@ const onResponse = (response) => {
   if (response.data.code == 200) {
     return response
   } else {
-    return Promise.reject(new Error((response.data && response.data.message) || '未知错误'))
+    return Promise.reject((response.data && response.data.message) || '未知错误')
   }
 }
 const onResponseError = (err) => {

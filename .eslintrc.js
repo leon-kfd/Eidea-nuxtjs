@@ -21,6 +21,7 @@ module.exports = {
     'vue/multiline-html-element-content-newline': 'off',
     'no-console': 'off',
     'arrow-parens': 'off',
+    'prefer-promise-reject-errors': 'off',
     eqeqeq: 'off',
     camelcase: 'off'
   }

@@ -141,7 +141,7 @@ export default {
         this.cartGoodsList = []
       }
     },
-    nothing () {},
+    nothing () { },
     showCart () {
       this.cartActive = !this.cartActive
     },
@@ -202,7 +202,7 @@ export default {
   &.show-mask {
     &:after {
       position: fixed;
-      content: "";
+      content: '';
       left: 0;
       top: 0;
       width: 100%;
@@ -255,12 +255,12 @@ export default {
   top: 0px;
   right: 0px;
   overflow: hidden;
-  transition: 0.8s cubic-bezier(0.68, -0.55, 0.27, 0.55);
+  transition: 0.8s cubic-bezier(0.43, -0.02, 0.66, 1.04);
 }
 .active > .new-active {
   width: 24px;
   height: 24px;
-  transition: 0.8s cubic-bezier(0.68, -0.55, 0.27, 0.55);
+  transition: 0.8s cubic-bezier(0.43, -0.02, 0.66, 1.04);
   top: -10px;
   right: -10px;
 }
@@ -275,7 +275,7 @@ export default {
   border-radius: 8px;
   box-shadow: 0 2px 12px #444;
   z-index: 50;
-  transition: 0.8s cubic-bezier(0.68, -0.55, 0.27, 0.55);
+  transition: 0.8s cubic-bezier(0.43, -0.02, 0.66, 1.04);
 }
 .shopping-cart-main-after {
   height: 450px;
@@ -285,7 +285,7 @@ export default {
 .shopping-cart-btn-after {
   border-radius: 0 0 8px 0;
   box-shadow: none;
-  transition: 0.8s cubic-bezier(0.68, -0.55, 0.27, 0.55);
+  transition: 0.8s cubic-bezier(0.43, -0.02, 0.66, 1.04);
 }
 /*shopping-cart-title*/
 .shopping-cart-title {
@@ -332,7 +332,7 @@ export default {
 }
 .i-rotate {
   transform: rotate(-360deg);
-  transition: 0.8s cubic-bezier(0.68, -0.55, 0.27, 0.55);
+  transition: 0.8s cubic-bezier(0.43, -0.02, 0.66, 1.04);
 }
 /*shopping-cart-list*/
 .shopping-cart-list {
