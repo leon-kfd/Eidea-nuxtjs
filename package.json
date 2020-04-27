@@ -1,7 +1,7 @@
 {
   "name": "nuxt-eidea",
   "version": "1.0.0",
-  "description": "My dazzling Nuxt.js project",
+  "description": "A pratice project for electricity, by Nuxtjs",
   "author": "Leon-kfd",
   "private": true,
   "scripts": {

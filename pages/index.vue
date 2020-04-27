@@ -50,7 +50,9 @@
            class="container">
         <div class="man-selling-box">
           <p class="selling-title fl">男士热销单品</p>
-          <p class="selling-more fr"><a href="search.html?sex=man">查看更多</a></p>
+          <p class="selling-more fr">
+            <nuxt-link :to="{path: '/query', query: {sex:1 }}">查看更多</nuxt-link>
+          </p>
           <div class="clear"></div>
           <div class="selling-box-main clear">
             <div v-for="(item,index) in manSelling"
@@ -71,7 +73,9 @@
         </div>
         <div class="lady-selling-box">
           <p class="selling-title fl">女士热销单品</p>
-          <p class="selling-more fr"><a href="search.html?sex=lady">查看更多</a></p>
+          <p class="selling-more fr">
+            <nuxt-link :to="{path: '/query', query: {sex:2 }}">查看更多</nuxt-link>
+          </p>
           <div class="clear"></div>
           <div class="selling-box-main clear">
             <div v-for="(item,index) in ladySelling"
@@ -303,7 +307,7 @@ export default {
           white-space: nowrap;
           padding: 0 8px;
           &:after {
-            content: "";
+            content: '';
             position: absolute;
             bottom: 0px;
             border-top: 2px solid #222;
