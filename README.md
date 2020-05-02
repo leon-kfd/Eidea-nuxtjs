@@ -1,22 +1,25 @@
-# nuxt-test
+## Eidea-nuxtjs
 
-> My dazzling Nuxt.js project
+> The front-end of the Ediea
 
-## Build Setup
+[View Online Demo](http://eidea.kongfandong.cn)
 
-``` bash
-# install dependencies
-$ npm run install
+使用Nuxtjs + Koa + Mysql实现的极简风格电商系统.
 
-# serve with hot reload at localhost:3000
-$ npm run dev
+## Artice
 
-# build for production and launch server
-$ npm run build
-$ npm run start
+[Artice for this project](https://www.kongfandong.cn/blog/design-of-exam-system/)
 
-# generate static project
-$ npm run generate
-```
+## Module
 
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+✅ 登录注销  
+✅ 首页商品轮播  
+✅ 首页商品推荐  
+✅ 商品分类搜索  
+✅ 商品详情  
+✅ 购物车增删改  
+✅ 商品收藏  
+✅ 生成订单  
+❌ 个人资料/地址管理  
+❌ 商品规格模块  
+❌ 支付模块  
