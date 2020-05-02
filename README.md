@@ -2,13 +2,13 @@
 
 > The front-end of the Ediea
 
-[View Online Demo](http://eidea.kongfandong.cn)
-
 使用Nuxtjs + Koa + Mysql实现的极简风格电商系统.
+
+[View Online Demo](http://eidea.kongfandong.cn)
 
 ## Artice
 
-[Artice for this project](https://www.kongfandong.cn/blog/design-of-exam-system/)
+[Artice for this project](https://www.kongfandong.cn/blog/design-of-electricity-system/)
 
 ## Module
 
