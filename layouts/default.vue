@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Loading />
     <HomeHeader />
     <div class="wraper">
       <nuxt />
@@ -13,11 +14,13 @@
 import HomeHeader from '@/components/HomeHeader'
 import HomeFooter from '@/components/HomeFooter'
 import Cart from '@/components/Cart'
+import Loading from '@/components/Loading'
 export default {
   components: {
     HomeHeader,
     HomeFooter,
-    Cart
+    Cart,
+    Loading
   }
 }
 </script>

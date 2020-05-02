@@ -17,7 +17,9 @@
             <p style="text-align:center;color:#999">规格选择模块</p>
           </div>
           <div class="goods-purchase-box">
-            <button class="btn-heart fl"><i class="fa fa-heart-o fa-fw"></i></button>
+            <button class="btn-heart fl"
+                    :class="{active:isCollect}"
+                    @click="updateCollection"><i class="fa fa-heart-o fa-fw"></i></button>
             <button id="AddToCartBtn"
                     class="btn-purchase fl"
                     @click="addShoppingcart">放入购物车 <i class="fa fa-long-arrow-right"></i></button>
@@ -56,12 +58,21 @@ export default {
   name: 'Detail',
   data () {
     return {
+      isCollect: false
     }
   },
   watch: {
     '$route.fullPath' () {
       this.getData()
     }
+    // '$store.state.username': {
+    //   immediate: true,
+    //   handler (val) {
+    //     if (val) {
+    //       this.getCollection()
+    //     }
+    //   }
+    // }
   },
   async asyncData ({ app, route }) {
     const { data } = await app.$get('/detail', {
@@ -82,6 +93,11 @@ export default {
       recommendList
     }
   },
+  mounted () {
+    if (this.$store.state.username) {
+      this.getCollection()
+    }
+  },
   methods: {
     async getData () {
       const { data } = await this.$get('detail', {
@@ -100,16 +116,30 @@ export default {
       this.goodsimg = `${this.$baseURL}goodsimg/${data.goodsimg}`
       this.recommendList = recommendList
     },
+    getCollection () {
+      this.$get('getCollection', {
+        id: this.$route.query.id
+      }).then(data => {
+        this.isCollect = !!data.data
+      })
+    },
+    updateCollection () {
+      this.$post('updateCollection', {
+        goodsid: this.$route.query.id
+      }).then(data => {
+        this.isCollect = !this.isCollect
+      }, data => {
+        alert(data)
+      })
+    },
     addShoppingcart () {
       this.$post('addToCart', {
         goodsid: this.$route.query.id
       }).then(data => {
-        if (data.code == 200) {
-          this.$store.commit('updateNeedRefreshCart', true)
-          this.showAnimateAddCart()
-        }
+        this.$store.commit('updateNeedRefreshCart', true)
+        this.showAnimateAddCart()
       }, data => {
-        alert('购物车已存在该商品，添加到购物车失败')
+        alert(data)
       })
     },
     showAnimateAddCart () {
@@ -213,8 +243,14 @@ button.btn-heart {
   background: transparent;
   cursor: pointer;
   margin-right: 15px;
+  outline: none;
 }
 button.btn-heart:hover {
+  color: #fff;
+  background: #ff6666;
+  transition: 0.5s all;
+}
+button.btn-heart.active {
   color: #fff;
   background: #ff6666;
   transition: 0.5s all;
@@ -255,7 +291,7 @@ button.btn-purchase:hover > i {
 .recommend-box > p.recommend-title:before,
 .recommend-box > p.recommend-title:after {
   position: absolute;
-  content: "";
+  content: '';
   top: 50%;
   width: 100px;
   border-top: 2px solid #262626;
@@ -291,7 +327,7 @@ button.btn-purchase:hover > i {
   padding: 0 8px;
 }
 .recommend-box-list p.goods-name:after {
-  content: "";
+  content: '';
   position: absolute;
   bottom: 0px;
   border-top: 2px solid #222;

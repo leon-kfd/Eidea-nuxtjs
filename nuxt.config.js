@@ -4,7 +4,7 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: process.env.npm_package_name || '',
+    title: 'Eidea',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -17,7 +17,12 @@ module.exports = {
   /*
   ** Customize the progress-bar color
   */
-  loading: { color: '#fff' },
+  // loading: '~/components/Loading.vue',
+  loading: {
+    color: '#4488ff',
+    height: '3px',
+    css: false
+  },
   /*
   ** Global CSS
   */
@@ -29,7 +34,8 @@ module.exports = {
   */
   plugins: [
     '~plugins/axios.js',
-    '~plugins/vue-lazyload.js'
+    '~plugins/vue-lazyload.js',
+    '~plugins/check-login.js'
   ],
   /*
   ** Nuxt.js dev-modules
@@ -46,6 +52,9 @@ module.exports = {
     '@nuxtjs/axios'
     // '@nuxtjs/proxy'
   ],
+  router: {
+    middleware: ['auth']
+  },
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options

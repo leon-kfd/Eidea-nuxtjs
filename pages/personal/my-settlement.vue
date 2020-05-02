@@ -1,5 +1,5 @@
 <template>
-  <div id="Settlement">
+  <div id="MySettlement">
     <ul class="title-nav">
       <li :class="statusActive==0?'active':''"
           @click="statusActive=0">全部</li>
@@ -80,7 +80,7 @@
 
 <script>
 export default {
-  name: 'Settlement',
+  name: 'MySettlement',
   data () {
     return {
       statusActive: 0,
@@ -150,8 +150,9 @@ ul.title-nav {
 }
 p.without {
   text-align: center;
-  line-height: 80px;
+  line-height: 250px;
   color: #888;
+  font-size: 14px;
 }
 table.settlement-table {
   width: 100%;

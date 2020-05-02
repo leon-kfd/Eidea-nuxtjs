@@ -9,10 +9,8 @@
             <li :class="navActive==1?'active':''"
                 @click="turn(1)"><span>个人资料</span></li>
             <li :class="navActive==2?'active':''"
-                @click="turn(2)"><span>收藏的商品</span></li>
-            <li :class="navActive==3?'active':''"
-                @click="turn(3)"><span>积分与优惠</span></li>
-            <li><span>退出登录</span></li>
+                @click="turn(2)"><span>我的收藏</span></li>
+            <li :class="navActive==3?'active':''"><span>积分与优惠</span></li>
           </ul>
         </div>
         <div class="right-box fl">
@@ -29,8 +27,9 @@ export default {
     return {
       navActive: 0,
       routerMap: {
-        0: '/personal/settlement',
-        1: '/personal/personal-info'
+        0: '/personal/my-settlement',
+        1: '/personal/personal-info',
+        2: '/personal/my-collection'
       }
     }
   },
